@@ -1,3 +1,4 @@
+// This component generalizes input fields for the checkout data
 export default function Input({label, id, ...props}) {
     return <p className="control">
         <label htmlFor={id}>{label}</label>

@@ -1,5 +1,6 @@
 import { createContext, useReducer } from 'react';
 
+// placeholder functions for addItem, removeItem, and clearCart
 const CartContext = createContext({
     items: [],
     addItem: (item) => {},
@@ -7,15 +8,19 @@ const CartContext = createContext({
     clearCart: () => {},
 });
 
+// a reducer function to manage state changes based on different actions.
 function cartReducer(state, action) {
     if (action.type === 'ADD_ITEM') {
+        // check if the item already exists in the cart
         const existingCartItemIndex = state.items.findIndex(
             (item) => item.id === action.item.id
         );
 
+        // a copy of the current items array
         const updatedItems = [...state.items];
 
         if (existingCartItemIndex > -1) {
+            // if the item exists, update its quantity
             const existingItem = state.items[existingCartItemIndex];
             const updatedItem = {
                 ...existingItem,
@@ -23,6 +28,7 @@ function cartReducer(state, action) {
             };
             updatedItems[existingCartItemIndex] = updatedItem;
         } else {
+            // if the item doesn't exist, add it with quantity 1
             updatedItems.push({ ...action.item, quantity: 1 });
         }
 
@@ -30,6 +36,7 @@ function cartReducer(state, action) {
     }
 
     if (action.type === 'REMOVE_ITEM') {
+        // finds the existing item
         const existingCartItemIndex = state.items.findIndex(
             (item) => item.id === action.id
         );
@@ -57,7 +64,10 @@ function cartReducer(state, action) {
     return state;
 }
 
+// CartContextProvider component to manage the cart state and provide context to the components
 export function CartContextProvider({ children }) {
+    // useReducer hook will manage the state in the cartContext
+    // the initial state is an empty array of items
     const [cart, dispatchCartAction] = useReducer(cartReducer, { items: [] });
 
     function addItem(item) {
@@ -79,6 +89,8 @@ export function CartContextProvider({ children }) {
         clearCart
     };
 
+    // providing the cartContext value to the components in its children
+    // the context is now available to this component's children
     return (
         <CartContext.Provider value={cartContext}>{children}</CartContext.Provider>
     );

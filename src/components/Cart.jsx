@@ -8,14 +8,19 @@ import UserProgressContext from '../store/UserProgressContext.jsx';
 import CartItem from './CartItem.jsx';
 
 export default function Cart() {
+    // The cart context will be shared and contain the data of the cart,
+    // So it can be passed to multiple components
     const cartCtx = useContext(CartContext);
+    // The user progress context reflects the user's status
     const userProgressCtx = useContext(UserProgressContext);
 
+    // Calculating the total sum of the cart
     const cartTotal = cartCtx.items.reduce(
         (totalPrice, item) => totalPrice + item.quantity * item.price,
         0
     );
 
+    // In case that the user decides not to check out
     function handleCloseCart() {
         userProgressCtx.hideCart();
     }

@@ -5,6 +5,7 @@ import Error from "./Error.jsx";
 const requestConfig = {};
 
 export default function Meals() {
+    // The initial data is an empty array, until the fetch will succeed
     const {
         data: loadedMeals,
         isLoading,

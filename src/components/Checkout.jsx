@@ -20,6 +20,7 @@ export default function Checkout() {
     const cartCtx = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
 
+    // destructing the response from the useHttp hook
     const {
         data,
         isLoading: isSending,
@@ -28,6 +29,7 @@ export default function Checkout() {
         clearData
     } = useHttp('http://localhost:3000/orders', requestConfig);
 
+    // Calculating the cart total
     const cartTotal = cartCtx.items.reduce(
         (totalPrice, item) => totalPrice + item.quantity * item.price,
         0
@@ -44,7 +46,7 @@ export default function Checkout() {
     }
 
     function handleSubmit(event) {
-        event.preventDefault();
+        event.preventDefault(); // prevents the default form submitting of the browser
 
         const fd = new FormData(event.target);
         const customerData = Object.fromEntries(fd.entries()); // { email: test@example.com }
@@ -68,10 +70,12 @@ export default function Checkout() {
         </>
     );
 
+    // in case the order sent, changing the content of the modal
     if (isSending) {
         actions = <span>Sending order data...</span>;
     }
 
+    // If there are no errors from the post request - enable the checkout modal
     if (data && !error) {
         return (
             <Modal
